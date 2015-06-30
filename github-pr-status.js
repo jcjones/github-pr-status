@@ -15,7 +15,7 @@
 var Client = require("github");
 
 var github = new Client({
-    debug: true,
+    debug: false,
     version: "3.0.0"
 });
 
@@ -71,3 +71,4 @@ data["description"] = ops.description;
 
 github.statuses.get(data, showDetails);
 github.statuses.create(data, showResult);
+
