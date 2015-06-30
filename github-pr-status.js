@@ -13,13 +13,8 @@
 "use strict";
 
 var Client = require("github");
-
-var github = new Client({
-    debug: false,
-    version: "3.0.0"
-});
-
 var stdio = require('stdio');
+
 var ops = stdio.getopt({
     'user': {key: 'u', args: 1, description: 'User segment of Github repo name', mandatory: true},
     'repo': {key: 'r', args: 1, description: 'Github repo name', mandatory: true},
@@ -29,6 +24,12 @@ var ops = stdio.getopt({
     'context': {key: 'c', args: 1, description: 'Test context'},
     'description': {key: 'd', args: 1, description: 'detailed description'},
     'authfile': {key: 'f', args: 1, description: 'authentication file', mandatory: true},
+    'debug': {key: 'D', description: 'enable debugging output'},
+});
+
+var github = new Client({
+    debug: ops.debug,
+    version: "3.0.0"
 });
 
 var authfile = require(ops.authfile);
@@ -44,7 +45,9 @@ function showResult(err, res){
     return;
   }
 
-  console.log("Result: " + res)
+  if (ops.debug) {
+    console.log("Result: " + res)
+  }
 }
 
 
@@ -54,11 +57,16 @@ function showDetails(err, res) {
     return;
   }
 
-  res.forEach(function (data){
-    console.log(data);
-  });
+  if (ops.debug) {
+    res.forEach(function (data){
+      console.log(data);
+    });
+  }
 }
-console.log(ops);
+
+if (ops.debug) {
+  console.log("Configuration: " + ops);
+}
 
 var data = {};
 data["context"] = ops.context;
@@ -69,6 +77,9 @@ data["state"] = ops.state;
 data["target_url"] = ops.url;
 data["description"] = ops.description;
 
-# github.statuses.get(data, showDetails);
+if (github.debug) {
+  github.statuses.get(data, showDetails);
+}
+
 github.statuses.create(data, showResult);
 
