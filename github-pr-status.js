@@ -69,6 +69,6 @@ data["state"] = ops.state;
 data["target_url"] = ops.url;
 data["description"] = ops.description;
 
-github.statuses.get(data, showDetails);
+# github.statuses.get(data, showDetails);
 github.statuses.create(data, showResult);
 
