@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
-// Posts a comment to Github on a PR.
+// Sets a status flag on a Github PR.
 //
 // Example usage:
-// node github-post-comments.js -f ./github-secret.json -u jcjones -r \
+// node github-pr-status.js -f ./github-secret.json -u jcjones -r \
 //   travis_commenter -s failure -i "0e296b7443b91d125f5b51e2d81663bcae667864" \
 //   -c "node/happy"
 //

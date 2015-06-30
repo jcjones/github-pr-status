@@ -7,7 +7,7 @@
 //
 // Example usage:
 // echo "hi" | node github-pr-comment.js -f ./github-secret.json -u jcjones \
-//   -r travis_commenter -i "0e296b7443b91d125f5b51e2d81663bcae667864"
+//   -r github-pr-status -n 1 -D
 //
 "use strict";
 
@@ -17,9 +17,6 @@ var stdio = require('stdio');
 var ops = stdio.getopt({
     'user': {key: 'u', args: 1, description: 'User segment of Github repo name', mandatory: true},
     'repo': {key: 'r', args: 1, description: 'Github repo name', mandatory: true},
-    'sha': {key: 'i', args: 1, description: 'commit ID', mandatory: true},
-    'position': {key: 'l', args: 1, description: 'line number', mandatory: true},
-    'path': {key: 'p', args: 1, description: 'file to comment on'},
     'pr': {key: 'n', args: 1, description: 'PR ID'},
     'authfile': {key: 'f', args: 1, description: 'authentication file', mandatory: true},
     'debug': {key: 'D', description: 'enable debugging output'},
@@ -55,15 +52,17 @@ function showDetails(err, res) {
     return;
   }
 
+  console.log(res)
+
   if (ops.debug) {
     res.forEach(function (data){
-      console.log(data);
+      console.log("DATA: " + data);
     });
   }
 }
 
 if (ops.debug) {
-  console.log("Configuration: " + ops);
+  console.log("Configuration: " + JSON.stringify(ops));
 }
 
 stdio.read(function(text){
@@ -71,12 +70,11 @@ stdio.read(function(text){
   data["number"] = ops.pr;
   data["user"] = ops.user;
   data["repo"] = ops.repo;
-  data["commit_id"] = ops.sha;
-  data["position"] = ops.position;
-  data["path"] = ops.path;
   data["body"] = text
 
-  github.pullRequests.createComment(data, showResult);
+  // github.issues.getComments(data, showDetails);
+
+  github.issues.createComment(data, showResult);
 });
 
 
