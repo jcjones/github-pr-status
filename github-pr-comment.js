@@ -3,12 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 //
-// Sets a status flag on a Github PR.
+// Posts a comment to Github on a PR.
 //
 // Example usage:
-// node github-pr-status.js -f ./github-secret.json -u jcjones -r \
-//   travis_commenter -s failure -i "0e296b7443b91d125f5b51e2d81663bcae667864" \
-//   -c "node/happy"
+// echo "hi" | node github-pr-comment.js -f ./github-secret.json -u jcjones \
+//   -r github-pr-status -n 1 -D
 //
 "use strict";
 
@@ -18,11 +17,7 @@ var stdio = require('stdio');
 var ops = stdio.getopt({
     'user': {key: 'u', args: 1, description: 'User segment of Github repo name', mandatory: true},
     'repo': {key: 'r', args: 1, description: 'Github repo name', mandatory: true},
-    'sha': {key: 'i', args: 1, description: 'commit ID', mandatory: true},
-    'state': {key: 's', args: 1, description: 'pending, success, error, or failure', mandatory: true},
-    'url': {key: 'l', args: 1, description: 'URL to link'},
-    'context': {key: 'c', args: 1, description: 'Test context'},
-    'description': {key: 'd', args: 1, description: 'detailed description'},
+    'pr': {key: 'n', args: 1, description: 'PR ID'},
     'authfile': {key: 'f', args: 1, description: 'authentication file', mandatory: true},
     'debug': {key: 'D', description: 'enable debugging output'},
 });
@@ -57,29 +52,31 @@ function showDetails(err, res) {
     return;
   }
 
+  console.log(res)
+
   if (ops.debug) {
     res.forEach(function (data){
-      console.log(data);
+      console.log("DATA: " + data);
     });
   }
 }
 
 if (ops.debug) {
-  console.log("Configuration: " + ops);
+  console.log("Configuration: " + JSON.stringify(ops));
 }
 
-var data = {};
-data["context"] = ops.context;
-data["user"] = ops.user;
-data["repo"] = ops.repo;
-data["sha"] = ops.sha;
-data["state"] = ops.state;
-data["target_url"] = ops.url;
-data["description"] = ops.description;
+stdio.read(function(text){
+  var data = {};
+  data["number"] = ops.pr;
+  data["user"] = ops.user;
+  data["repo"] = ops.repo;
+  data["body"] = text
 
-if (github.debug) {
-  github.statuses.get(data, showDetails);
-}
+  // github.issues.getComments(data, showDetails);
 
-github.statuses.create(data, showResult);
+  github.issues.createComment(data, showResult);
+});
+
+
+
 
