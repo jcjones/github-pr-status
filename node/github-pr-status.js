@@ -6,7 +6,7 @@
 // Sets a status flag on a Github PR.
 //
 // Example usage:
-// node github-pr-status.js -f ./github-secret.json -u jcjones -r \
+// node github-pr-status.js -f ./github-secret.json -o jcjones -r \
 //   travis_commenter -s failure -i "0e296b7443b91d125f5b51e2d81663bcae667864" \
 //   -c "node/happy"
 //
@@ -16,7 +16,7 @@ var Client = require("github");
 var stdio = require('stdio');
 
 var ops = stdio.getopt({
-    'user': {key: 'u', args: 1, description: 'User segment of Github repo name', mandatory: true},
+    'owner': {key: 'o', args: 1, description: 'Owner segment of Github repo name', mandatory: true},
     'repo': {key: 'r', args: 1, description: 'Github repo name', mandatory: true},
     'sha': {key: 'i', args: 1, description: 'commit ID', mandatory: true},
     'state': {key: 's', args: 1, description: 'pending, success, error, or failure', mandatory: true},
@@ -70,7 +70,7 @@ if (ops.debug) {
 
 var data = {};
 data["context"] = ops.context;
-data["user"] = ops.user;
+data["user"] = ops.owner;
 data["repo"] = ops.repo;
 data["sha"] = ops.sha;
 data["state"] = ops.state;

@@ -6,7 +6,7 @@
 // Posts a comment to Github on a PR.
 //
 // Example usage:
-// echo "hi" | node github-pr-comment.js -f ./github-secret.json -u jcjones \
+// echo "hi" | node github-pr-comment.js -f ./github-secret.json -o jcjones \
 //   -r github-pr-status -n 1 -D
 //
 "use strict";
@@ -15,7 +15,7 @@ var Client = require("github");
 var stdio = require('stdio');
 
 var ops = stdio.getopt({
-    'user': {key: 'u', args: 1, description: 'User segment of Github repo name', mandatory: true},
+    'owner': {key: 'o', args: 1, description: 'Owner segment of Github repo name', mandatory: true},
     'repo': {key: 'r', args: 1, description: 'Github repo name', mandatory: true},
     'pr': {key: 'n', args: 1, description: 'PR ID'},
     'authfile': {key: 'f', args: 1, description: 'authentication file', mandatory: true},
@@ -68,7 +68,7 @@ if (ops.debug) {
 stdio.read(function(text){
   var data = {};
   data["number"] = ops.pr;
-  data["user"] = ops.user;
+  data["user"] = ops.owner;
   data["repo"] = ops.repo;
   data["body"] = text
 

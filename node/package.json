@@ -1,6 +1,6 @@
 {
   "name": "github-pr-status",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Github PR status script. Very useful for Travis-CI.",
   "main": "index.js",
   "repository": "https://github.com/jcjones/github-pr-status",
@@ -13,6 +13,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "readme": "ERROR: No README data found!",
-  "author": "James 'J.C.' Jones <pug@pugsplace.net>",
+  "author": "James 'J.C.' Jones <jcjones@letsencrypt.org>",
   "license": "MPL"
 }
