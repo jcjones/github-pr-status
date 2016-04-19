@@ -125,7 +125,7 @@ func actionAddComment(c *cli.Context) {
 		return
 	}
 
-	fmt.Printf("Comment PR=#%d, Body=%s\n", pr, body)
+	fmt.Printf("Comment PR=#%d\n", pr)
 
 	// Checked at the global scope
 	owner := c.GlobalString("owner")
