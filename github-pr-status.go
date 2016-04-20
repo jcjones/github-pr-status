@@ -84,7 +84,6 @@ func actionSetStatus(c *cli.Context) {
 	repo := c.GlobalString("repo")
 	debug := c.GlobalBool("debug")
 
-	fmt.Printf("Status ID=%s State=%s Context=%s URL=%s Description=%s\n", sha, state, context, url, description)
 	err = api.StatusSet(authenticationConfig, owner, repo, sha, state, context, url, description, debug)
 	if err != nil {
 		fmt.Printf("Could not post: %s\n", err.Error())
